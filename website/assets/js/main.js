@@ -273,9 +273,150 @@
     setTimeout(function () { window.location.href = el.href; }, 230);
   });
 
-  /* Interaktives 3D-Bauteil (nur Startseite) ------------------------------ */
+  /* Scroll-Story „Vom Rohling zum Präzisionsteil“ ----------------------- */
+  var story = document.querySelector("[data-story]");
+  if (story && !reduceMotion) {
+    story.classList.add("is-pinned");
+    var storySteps = story.querySelectorAll("[data-step]");
+    var storyPhase = story.querySelector("[data-story-phase]");
+    var MARKS = [0, 0.1, 0.5, 0.72, 0.86];
+    var currentStep = -1;
+    var updateStory = function () {
+      var r = story.getBoundingClientRect();
+      var total = r.height - window.innerHeight;
+      var prog = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 0;
+      story.setAttribute("data-progress", prog.toFixed(4));
+      story.style.setProperty("--p", prog.toFixed(4));
+      var idx = 0;
+      for (var i = 0; i < MARKS.length; i++) if (prog >= MARKS[i]) idx = i;
+      if (idx !== currentStep) {
+        currentStep = idx;
+        storySteps.forEach(function (el, n) {
+          el.classList.toggle("is-active", n === idx);
+          el.classList.toggle("is-done", n < idx);
+        });
+        if (storyPhase && storySteps[idx]) storyPhase.textContent = storySteps[idx].querySelector("h3").textContent;
+      }
+    };
+    window.addEventListener("scroll", function () { requestAnimationFrame(updateStory); }, { passive: true });
+    window.addEventListener("resize", updateStory);
+    updateStory();
+  }
+
+  /* Laufband reagiert auf Scrollrichtung und -tempo ---------------------- */
+  var marquee = document.querySelector(".marquee");
+  if (marquee && !reduceMotion) {
+    var mTrack = marquee.querySelector(".marquee-track");
+    var mX = 0, mLastY = window.scrollY, mVel = 0, mDir = -1, mHover = false, mVisible = true;
+    marquee.classList.add("is-js");
+    marquee.addEventListener("pointerenter", function () { mHover = true; });
+    marquee.addEventListener("pointerleave", function () { mHover = false; });
+    if (hasIO) new IntersectionObserver(function (en) { mVisible = en[0].isIntersecting; }).observe(marquee);
+    var mLoop = function () {
+      var y = window.scrollY;
+      var d = y - mLastY;
+      mLastY = y;
+      if (d !== 0) mDir = d > 0 ? -1 : 1;
+      mVel += (Math.abs(d) - mVel) * 0.1;
+      if (mVisible) {
+        mX += (mHover ? 0.12 : 0.55 + Math.min(mVel, 60) * 0.14) * mDir;
+        var half = mTrack.scrollWidth / 2;
+        if (half > 0) { if (mX <= -half) mX += half; if (mX > 0) mX -= half; }
+        var skew = Math.max(-7, Math.min(7, -d * 0.2));
+        mTrack.style.transform = "translate3d(" + mX.toFixed(2) + "px,0,0) skewX(" + skew.toFixed(2) + "deg)";
+      }
+      requestAnimationFrame(mLoop);
+    };
+    requestAnimationFrame(mLoop);
+  }
+
+  /* CAD-Fadenkreuz mit Koordinaten in Millimetern ------------------------ */
+  var heroEl = document.querySelector(".hero");
+  var cad = heroEl ? heroEl.querySelector(".cad-cursor") : null;
+  if (cad && finePointer && !reduceMotion) {
+    var cadLabel = cad.querySelector(".cad-label");
+    heroEl.addEventListener("pointermove", function (e) {
+      var r = heroEl.getBoundingClientRect();
+      var x = e.clientX - r.left;
+      var y = e.clientY - r.top;
+      cad.style.setProperty("--cx", x.toFixed(0) + "px");
+      cad.style.setProperty("--cy", y.toFixed(0) + "px");
+      cadLabel.textContent = "X " + (x * 0.2646).toFixed(1).padStart(5, "0") + " · Y " + (y * 0.2646).toFixed(1).padStart(5, "0");
+      cad.classList.add("is-on");
+    });
+    heroEl.addEventListener("pointerleave", function () { cad.classList.remove("is-on"); });
+  }
+
+  /* Bento-Kacheln: Animationen beim Sichtbarwerden ------------------------ */
+  var runDro = function (tile) {
+    tile.querySelectorAll("[data-dro-to]").forEach(function (el, i) {
+      var to = parseFloat(el.getAttribute("data-dro-to"));
+      var from = to + (Math.random() - 0.5) * 400;
+      var start = null;
+      var dur = 1500 + i * 300;
+      var step = function (ts) {
+        if (start === null) start = ts;
+        var k = Math.min(1, (ts - start) / dur);
+        el.textContent = (from + (to - from) * (1 - Math.pow(1 - k, 4))).toFixed(3);
+        if (k < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    });
+  };
+  var animTiles = document.querySelectorAll(".tile--batch, .tile--quality, .tile--time, .tile--prec");
+  if (!reduceMotion && hasIO) {
+    var tileObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        tileObserver.unobserve(entry.target);
+        entry.target.classList.add("is-in");
+        if (entry.target.classList.contains("tile--prec")) runDro(entry.target);
+      });
+    }, { threshold: 0.35 });
+    animTiles.forEach(function (el) { tileObserver.observe(el); });
+  } else {
+    animTiles.forEach(function (el) { el.classList.add("is-in"); });
+  }
+
+  /* Datei-Upload: Dateiliste, Prüfung, Drag & Drop ------------------------ */
+  var MAX_FILES = 3;
+  var MAX_BYTES = 10 * 1024 * 1024;
+  var OK_EXT = /\.(pdf|step|stp|igs|iges|dxf|dwg|zip|jpe?g|png)$/i;
+  document.querySelectorAll(".dropzone").forEach(function (zone) {
+    var input = zone.querySelector('input[type="file"]');
+    var list = zone.querySelector("[data-files]");
+    if (!input || !list) return;
+    ["dragenter", "dragover"].forEach(function (t) { zone.addEventListener(t, function () { zone.classList.add("is-drag"); }); });
+    ["dragleave", "drop"].forEach(function (t) { zone.addEventListener(t, function () { zone.classList.remove("is-drag"); }); });
+    input.addEventListener("change", function () {
+      var files = Array.prototype.slice.call(input.files || []);
+      var total = 0;
+      var problem = "";
+      list.textContent = "";
+      files.forEach(function (f) {
+        total += f.size;
+        var chip = document.createElement("span");
+        chip.textContent = f.name + " · " + (f.size < 1048576 ? Math.max(1, Math.round(f.size / 1024)) + " KB" : (f.size / 1048576).toFixed(1) + " MB");
+        if (!OK_EXT.test(f.name)) { chip.className = "is-error"; problem = "Dateityp nicht erlaubt: " + f.name; }
+        list.appendChild(chip);
+      });
+      if (files.length > MAX_FILES) problem = "Bitte höchstens " + MAX_FILES + " Dateien auswählen.";
+      else if (total > MAX_BYTES) problem = "Die Dateien sind zusammen größer als 10 MB.";
+      input.setCustomValidity(problem);
+      zone.classList.toggle("has-files", files.length > 0);
+      if (problem) {
+        var err = document.createElement("span");
+        err.className = "is-error";
+        err.textContent = problem;
+        list.appendChild(err);
+      }
+    });
+  });
+
+  /* Interaktives 3D (Startseite): Viewer im Hero + Scroll-Story ----------- */
   var viewer = document.querySelector("[data-viewer]");
-  if (viewer && scriptSrc) {
+  var storyLive = document.querySelector("[data-story].is-pinned");
+  if ((viewer || storyLive) && scriptSrc) {
     var webgl = false;
     try {
       var test = document.createElement("canvas");
@@ -289,8 +430,10 @@
         var module = document.createElement("script");
         module.type = "module";
         module.textContent =
-          'import { initViewer } from "' + src.href + '";' +
-          'initViewer(document.querySelector("[data-viewer]"), { reducedMotion: ' + reduceMotion + ' });';
+          'import { initViewer, initStory } from "' + src.href + '";' +
+          'var o = { reducedMotion: ' + reduceMotion + ' };' +
+          'var v = document.querySelector("[data-viewer]"); if (v) initViewer(v, o);' +
+          'var s = document.querySelector("[data-story].is-pinned"); if (s) initStory(s, o);';
         document.body.appendChild(module);
       };
       if (document.readyState === "complete") setTimeout(loadViewer, 100);

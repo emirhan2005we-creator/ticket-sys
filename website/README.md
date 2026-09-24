@@ -7,7 +7,7 @@ Kein Framework, kein Build-Schritt: Die Dateien können direkt zu jedem Hoster m
 
 | Datei | Inhalt |
 |---|---|
-| `index.html` | Startseite: Hero, Kennzahlen, Vorstellung, Leistungen, Vorteile, Ablauf, Branchen, FAQ, Schnellanfrage-Formular |
+| `index.html` | Startseite: Hero mit 3D-Viewer, Kennzahlen, Vorstellung, Scroll-Story „Vom Rohling zum Präzisionsteil“, Leistungen, Vorteile (Bento-Grid), Branchen, FAQ, Schnellanfrage mit Datei-Upload |
 | `ueber-uns.html` | Geschichte, Geschäftsführer, Philosophie, Qualitätsanspruch |
 | `leistungen.html` | CNC-Drehen, CNC-Fräsen, Präzisions-/Sonderteile, Werkstoffe, Anfrage-Checkliste |
 | `qualitaet.html` | Prüfprozess, Zertifizierungen, Maschinenpark, Messtechnik |
@@ -16,13 +16,14 @@ Kein Framework, kein Build-Schritt: Die Dateien können direkt zu jedem Hoster m
 | `impressum.html` | Impressum nach § 5 DDG inkl. HRB 219627, AG Osnabrück |
 | `datenschutz.html` | Datenschutzerklärung (DSGVO) |
 | `danke.html`, `404.html` | Bestätigungs- und Fehlerseite (nicht indexiert) |
-| `kontakt-senden.php` | Versand des Kontaktformulars per E-Mail |
+| `kontakt-senden.php` | Versand beider Formulare per E-Mail, inkl. Zeichnungen als Anhang |
+| `.user.ini` | PHP-Upload-Grenzen (12 MB) für Hoster mit PHP-FPM/CGI |
 
 ```
 assets/css/style.css   Gesamtes Styling (Design-Tokens oben in :root)
 assets/js/main.js      Navigation, Formulare, Animationen (Funken, Neigen, Zähler, Einblenden)
 assets/js/hero3d.js    Interaktiver 3D-Viewer der Startseite (Quelle: tools/3d-viewer)
-assets/fonts/          Inter + Space Grotesk (lokal, SIL Open Font License)
+assets/fonts/          Inter, Space Grotesk, Space Mono (lokal, SIL Open Font License)
 assets/img/            3D-Bauteilansichten (WebP, je groß + klein), og-image.jpg; hier auch echte Fotos ablegen
 .htaccess              Apache: 404-Seite, Caching, Komprimierung, Sicherheits-Header
 robots.txt, sitemap.xml, favicon.svg
@@ -51,7 +52,10 @@ grep -rn "ph-text\|class=\"ph\|ihre-domain\|20XX\|Musterstraße\|000000" --inclu
    E-Mail, Fax, Geschäftszeiten, USt-IdNr. (Impressum).
 2. **Domain** `ihre-domain.de` überall ersetzen (HTML, `sitemap.xml`, `robots.txt`, `kontakt-senden.php`).
 3. **Kontaktformular:** In `kontakt-senden.php` `EMPFAENGER` und `ABSENDER` setzen.
-   Der Absender muss eine Adresse auf der eigenen Domain sein. Danach eine Testanfrage senden.
+   Der Absender muss eine Adresse auf der eigenen Domain sein. Danach eine Testanfrage senden,
+   auch mit angehängter PDF-Datei. Erlaubt sind PDF, STEP, IGES, DXF, DWG, ZIP, JPG und PNG,
+   bis zu 3 Dateien mit zusammen 10 MB. Falls größere Dateien abgelehnt werden,
+   greift beim Hoster die `.user.ini` nicht. Dann die Upload-Grenze im Kundenmenü des Hosters erhöhen.
 4. **Fachliche Angaben bestätigen:** Toleranzen, Werkstückgrößen, Maschinenpark, Messtechnik,
    Zertifizierungen, Branchen, Werkstoffe, Zeitstrahl, Zitat des Geschäftsführers.
    Außerdem die Zusagen in den FAQ auf der Startseite: Angebotsfrist, Geheimhaltungsvereinbarung (NDA)
@@ -86,8 +90,14 @@ grep -rn "ph-text\|class=\"ph\|ihre-domain\|20XX\|Musterstraße\|000000" --inclu
 
 - Farben: Dunkelblau/Stahl, Akzent „Funkenorange“ (`--accent` in `style.css`) für Buttons und Highlights
 - Überschriften in Space Grotesk, Fließtext in Inter
-- Startseite: interaktives 3D-Bauteil (drehbar, 4 Bauteile per Tab), Laufband mit Schlagworten,
+- Startseite: interaktives 3D-Bauteil (drehbar, folgt der Maus, 4 Bauteile per Tab, Achsanzeige),
+  CAD-Fadenkreuz mit Koordinaten in mm, Laufband, das auf Scrollrichtung und -tempo reagiert,
   hochzählende Kennzahl, Wort-für-Wort-Animation der Überschrift, metallischer Glanz auf „Präzision.“
+- Scroll-Story „Vom Rohling zum Präzisionsteil“: Beim Scrollen wird aus dem Rohling die Welle gedreht
+  (mit Funkenflug), die Nut gefräst, per Messring geprüft und das fertige Teil präsentiert.
+  Ohne WebGL steht dort ein Standbild; mit „Bewegung reduzieren“ werden die Schritte als Liste gezeigt.
+- Vorteile als Bento-Grid mit Digitalanzeige, Losgrößen-Balken, Prüf-Häkchen, Terminbalken und Koordinaten
+- Filmkorn-Textur auf dunklen Flächen, technische Details in Space Mono
 - Überall: Funkenflug beim Klick auf orange Buttons, magnetische Buttons, Karten neigen sich zur Maus,
   Lichtkegel folgt dem Zeiger, Unterstreichungen zeichnen sich beim Scrollen ein,
   Fortschrittsbalken im Header, weiche Seitenübergänge (View Transitions)

@@ -1,6 +1,9 @@
 # Interaktiver 3D-Viewer (Startseite)
 
-`hero3d.src.js` ist der Quellcode des 3D-Bauteils im Startbereich der Website.
+`hero3d.src.js` ist der Quellcode der 3D-Szenen der Startseite:
+`initViewer` für das drehbare Bauteil im Startbereich und `initStory` für die Scroll-Story
+„Vom Rohling zum Präzisionsteil“. Den Scroll-Fortschritt der Story liefert `main.js`
+über `data-progress`.
 Die Bauteile (Welle, Flansch, Gehäuse, Adapter) werden im Browser aus Profilen erzeugt,
 ganz ohne 3D-Dateien und ohne externe Server.
 

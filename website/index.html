@@ -20,9 +20,9 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preload" href="assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/style.css?v=4">
+  <link rel="stylesheet" href="assets/css/style.css?v=5">
   <script>document.documentElement.classList.replace("no-js", "js");</script>
-  <script src="assets/js/main.js?v=4" defer></script>
+  <script src="assets/js/main.js?v=5" defer></script>
   <!-- Strukturierte Daten: Adresse/Telefon/E-Mail/Domain bei Livegang anpassen -->
   <script type="application/ld+json">
 {
@@ -85,6 +85,7 @@
   <main id="main" tabindex="-1">
     <section class="hero hero--xl" aria-labelledby="hero-title">
       <div class="hero-aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="cad-cursor" aria-hidden="true"><span class="cad-h"></span><span class="cad-v"></span><span class="cad-label">X 000.0 · Y 000.0</span></div>
       <div class="container hero-grid">
         <div>
           <p class="pill"><span class="pill-dot" aria-hidden="true"></span>CNC-Präzisionsteile aus Georgsmarienhütte</p>
@@ -109,6 +110,7 @@
           <div class="viewer-stage">
             <img class="viewer-fallback" src="assets/img/teile-uebersicht.webp" srcset="assets/img/teile-uebersicht-sm.webp 700w, assets/img/teile-uebersicht.webp 1400w" sizes="(min-width: 960px) 560px, 100vw" width="1400" height="878" alt="3D-Ansicht typischer Präzisionsteile: Flansch, gefrästes Aluminiumgehäuse, gedrehte Edelstahlwelle, Messingadapter und Bundbuchse" fetchpriority="high" decoding="async">
             <canvas class="viewer-canvas" data-sparks aria-hidden="true"></canvas>
+            <p class="viewer-dro" data-dro aria-hidden="true">C 000.0° · B 0.0°</p>
           </div>
           <div class="viewer-ui">
             <div class="viewer-tabs" role="group" aria-label="Bauteil in 3D ansehen">
@@ -136,7 +138,7 @@
     </section>
 
     <div class="marquee" aria-hidden="true">
-      <div class="marquee-track"><span class="marquee-item">CNC-Drehen</span><span class="marquee-dot"></span><span class="marquee-item">CNC-Fräsen</span><span class="marquee-dot"></span><span class="marquee-item">Prototypen</span><span class="marquee-dot"></span><span class="marquee-item">Kleinserien</span><span class="marquee-dot"></span><span class="marquee-item">Serienfertigung</span><span class="marquee-dot"></span><span class="marquee-item">Edelstahl</span><span class="marquee-dot"></span><span class="marquee-item">Aluminium</span><span class="marquee-dot"></span><span class="marquee-item">Messing</span><span class="marquee-dot"></span><span class="marquee-item">Sonderteile</span><span class="marquee-dot"></span><span class="marquee-item">Made in Germany</span><span class="marquee-dot"></span><span class="marquee-item">CNC-Drehen</span><span class="marquee-dot"></span><span class="marquee-item">CNC-Fräsen</span><span class="marquee-dot"></span><span class="marquee-item">Prototypen</span><span class="marquee-dot"></span><span class="marquee-item">Kleinserien</span><span class="marquee-dot"></span><span class="marquee-item">Serienfertigung</span><span class="marquee-dot"></span><span class="marquee-item">Edelstahl</span><span class="marquee-dot"></span><span class="marquee-item">Aluminium</span><span class="marquee-dot"></span><span class="marquee-item">Messing</span><span class="marquee-dot"></span><span class="marquee-item">Sonderteile</span><span class="marquee-dot"></span><span class="marquee-item">Made in Germany</span><span class="marquee-dot"></span></div>
+      <div class="marquee-track"><span class="marquee-item" data-text="CNC-Drehen"></span><span class="marquee-dot"></span><span class="marquee-item" data-text="CNC-Fräsen"></span><span class="marquee-dot"></span><span class="marquee-item" data-text="Prototypen"></span><span class="marquee-dot"></span><span class="marquee-item" data-text="Kleinserien"></span><span class="marquee-dot"></span><span class="marquee-item" data-text="Serienfertigung"></span><span class="marquee-dot"></span><span class="marquee-item" data-text="Edelstahl"></span><span class="marquee-dot"></span><span class="marquee-item" data-text="Aluminium"></span><span class="marquee-dot"></span><span class="marquee-item" data-text="Messing"></span><span class="marquee-dot"></span><span class="marquee-item" data-text="Sonderteile"></span><span class="marquee-dot"></span><span class="marquee-item" data-text="Made in Germany"></span><span class="marquee-dot"></span><span class="marquee-item" data-text="CNC-Drehen"></span><span class="marquee-dot"></span><span class="marquee-item" data-text="CNC-Fräsen"></span><span class="marquee-dot"></span><span class="marquee-item" data-text="Prototypen"></span><span class="marquee-dot"></span><span class="marquee-item" data-text="Kleinserien"></span><span class="marquee-dot"></span><span class="marquee-item" data-text="Serienfertigung"></span><span class="marquee-dot"></span><span class="marquee-item" data-text="Edelstahl"></span><span class="marquee-dot"></span><span class="marquee-item" data-text="Aluminium"></span><span class="marquee-dot"></span><span class="marquee-item" data-text="Messing"></span><span class="marquee-dot"></span><span class="marquee-item" data-text="Sonderteile"></span><span class="marquee-dot"></span><span class="marquee-item" data-text="Made in Germany"></span><span class="marquee-dot"></span></div>
     </div>
 
     <section class="section" aria-labelledby="intro-title">
@@ -168,6 +170,38 @@
             <figcaption class="shot-caption"><span class="shot-label">3D-Ansicht</span>Edelstahlwelle mit Gewinde und Passfeder, Bundbuchse aus Messing</figcaption>
           </figure>
             <div class="media-badge"><span class="media-badge-value">35+</span><span class="media-badge-label">Jahre Erfahrung in der Metallbearbeitung</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="story" id="fertigung" data-story aria-labelledby="story-title">
+      <div class="story-sticky">
+        <div class="container story-grid">
+          <div class="story-copy">
+            <p class="eyebrow">So entsteht Ihr Bauteil</p>
+            <h2 id="story-title">Vom Rohling zum <span class="hl">Präzisionsteil</span></h2>
+            <ol class="story-steps">
+              <li class="story-step" data-step="0"><span class="story-num">01</span><div><h3>Rohling</h3><p>Alles beginnt mit dem passenden Werkstoff – zum Beispiel Rundmaterial aus Edelstahl 1.4305.</p></div></li>
+              <li class="story-step" data-step="1"><span class="story-num">02</span><div><h3>Drehen</h3><p>Auf der CNC-Drehmaschine entstehen Kontur, Durchmesser, Einstich und Gewinde – Span für Span, exakt nach Zeichnung.</p></div></li>
+              <li class="story-step" data-step="2"><span class="story-num">03</span><div><h3>Fräsen</h3><p>Nuten, Flächen und Bohrbilder werden präzise gefräst – maßhaltig und sauber entgratet.</p></div></li>
+              <li class="story-step" data-step="3"><span class="story-num">04</span><div><h3>Prüfen</h3><p>Durchmesser, Gewinde und Oberflächen werden gemessen und dokumentiert – auf Wunsch mit Messprotokoll.</p></div></li>
+              <li class="story-step" data-step="4"><span class="story-num">05</span><div><h3>Liefern</h3><p>Fertig bearbeitet, geprüft und sicher verpackt – termingerecht bei Ihnen.</p></div></li>
+            </ol>
+            <a class="btn btn--accent story-cta" href="#schnellanfrage">Ihr Bauteil anfragen<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+          <div class="story-stage">
+            <img class="story-fallback" src="assets/img/welle.webp" srcset="assets/img/welle-sm.webp 600w, assets/img/welle.webp 1194w" sizes="(min-width: 960px) 600px, 100vw" width="1194" height="672" alt="3D-Ansicht der fertig gedrehten und gefrästen Welle" loading="lazy" decoding="async">
+            <canvas class="story-canvas" aria-hidden="true"></canvas>
+            <div class="story-labels" aria-hidden="true">
+              <span class="story-label" data-anchor="-52.4,10,0"><span class="story-tag"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Ø20 h6</span></span>
+              <span class="story-label is-below" data-anchor="-24.4,-14,0"><span class="story-tag"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Ø28 k6</span></span>
+              <span class="story-label" data-anchor="2.6,14,0"><span class="story-tag"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Ra 0,8</span></span>
+              <span class="story-label is-below" data-anchor="20,-20,0"><span class="story-tag"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Ø40</span></span>
+              <span class="story-label" data-anchor="48.1,12,0"><span class="story-tag"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>M24×1,5</span></span>
+            </div>
+            <div class="story-hud" aria-hidden="true"><span>PRG AYT-0001</span><span data-story-phase>Rohling</span></div>
+            <div class="story-bar" aria-hidden="true"><span></span></div>
           </div>
         </div>
       </div>
@@ -218,47 +252,70 @@
           <p class="eyebrow">Ihre Vorteile</p>
           <h2 id="benefits-title">Warum Kunden auf AY-Tech <span class="hl">setzen</span></h2>
         </div>
-        <ul class="features">
-          <li class="feature" data-spot>
-            <span class="icon-wrap"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="9" r="6"/><path d="M8.5 13.8 7 22l5-2.6 5 2.6-1.5-8.2"/><path d="m9.6 9 1.6 1.6 3.2-3.2"/></svg></span>
-            <div><h3>Erfahrung, die zählt</h3><p>Über 35&nbsp;Jahre Branchenkenntnis der Geschäftsführung – für fertigungsgerechte Lösungen und belastbare Aussagen.</p></div>
-          </li>
-          <li class="feature" data-spot>
-            <span class="icon-wrap"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v4M12 18.5v4M1.5 12h4M18.5 12h4"/></svg></span>
-            <div><h3>Präzision bis ins Detail</h3><p>Enge Toleranzen und saubere Oberflächen sind für uns Standard – nicht die Ausnahme.</p></div>
-          </li>
-          <li class="feature" data-spot>
-            <span class="icon-wrap"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 3 9 4.5-9 4.5-9-4.5z"/><path d="m3 12 9 4.5 9-4.5"/><path d="m3 16.5 9 4.5 9-4.5"/></svg></span>
-            <div><h3>Flexibel in der Losgröße</h3><p>Vom Einzelteil über den Prototyp bis zur Serie – jeweils wirtschaftlich gefertigt.</p></div>
-          </li>
-          <li class="feature" data-spot>
-            <span class="icon-wrap"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span>
-            <div><h3>Verlässliche Termine</h3><p>Realistische Liefertermine, die wir einhalten – und offene Kommunikation, falls sich etwas ändert.</p></div>
-          </li>
-          <li class="feature" data-spot>
-            <span class="icon-wrap"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="4"/><path d="M4 21c.8-4 4-6 8-6s7.2 2 8 6"/></svg></span>
-            <div><h3>Kurze Wege</h3><p>Ein fester Ansprechpartner und schnelle Entscheidungen – ohne Umwege über Callcenter oder Hierarchien.</p></div>
-          </li>
-          <li class="feature" data-spot>
-            <span class="icon-wrap"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.5 4.5 5.5v6c0 4.8 3.2 8.5 7.5 10 4.3-1.5 7.5-5.2 7.5-10v-6z"/><path d="m8.8 12 2.2 2.2 4.4-4.4"/></svg></span>
-            <div><h3>Geprüfte Qualität</h3><p>Maßprüfung vor Auslieferung – auf Wunsch mit Messprotokoll zu Ihren Bauteilen.</p></div>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="section section--alt" aria-labelledby="process-title">
-      <div class="container">
-        <div class="section-head">
-          <p class="eyebrow">Ablauf</p>
-          <h2 id="process-title">In vier Schritten zu Ihrem <span class="hl">Bauteil</span></h2>
+        <div class="bento">
+          <article class="tile tile--exp" data-spot>
+            <p class="tile-kicker">Erfahrung</p>
+            <p class="tile-big"><span data-count="35" data-suffix="+">35+</span></p>
+            <h3>Jahre Know-how in der Metallbearbeitung</h3>
+            <p>Die Geschäftsführung bringt über 35&nbsp;Jahre Branchenkenntnis mit – für fertigungsgerechte Lösungen und belastbare Aussagen.</p>
+            <p class="tile-sign">Yüksel Açil · Geschäftsführer</p>
+          </article>
+          <article class="tile tile--prec" data-spot>
+            <div class="dro" aria-hidden="true">
+              <p class="dro-row"><span class="dro-axis">X</span><span class="dro-val" data-dro-to="124.500">124.500</span></p>
+              <p class="dro-row"><span class="dro-axis">Z</span><span class="dro-val" data-dro-to="-38.250">-38.250</span></p>
+              <p class="dro-row"><span class="dro-axis">Ø</span><span class="dro-val" data-dro-to="24.000">24.000</span></p>
+            </div>
+            <div>
+              <h3>Präzision bis ins Detail</h3>
+              <p>Enge Toleranzen und saubere Oberflächen sind für uns Standard – nicht die Ausnahme.</p>
+            </div>
+          </article>
+          <article class="tile tile--batch" data-spot>
+            <div class="bars" aria-hidden="true"><span class="b1"><i>1</i></span><span class="b2"><i>10</i></span><span class="b3"><i>100</i></span><span class="b4"><i>1000</i></span></div>
+            <h3>Einzelteil bis Serie</h3>
+            <p>Jede Losgröße wirtschaftlich gefertigt.</p>
+          </article>
+          <article class="tile tile--mat" data-spot>
+            <ul class="swatches">
+              <li class="sw sw--steel">Stahl</li><li class="sw sw--inox">Edelstahl</li><li class="sw sw--alu">Alu</li><li class="sw sw--brass">Messing</li><li class="sw sw--plastic">Kunststoff</li>
+            </ul>
+            <h3>Werkstoffvielfalt</h3>
+            <p><a href="leistungen.html#werkstoffe">Alle Werkstoffe ansehen</a></p>
+          </article>
+          <article class="tile tile--contact" data-spot>
+            <span class="avatar" aria-hidden="true">YA</span>
+            <h3>Kurze Wege</h3>
+            <p>Direkter Draht zur Geschäftsführung – ohne Callcenter.</p>
+            <p class="tile-link"><a href="tel:+495401000000"><span class="ph-text">+49&nbsp;5401&nbsp;000000</span></a></p>
+          </article>
+          <article class="tile tile--quality" data-spot>
+            <ul class="ticks">
+              <li>Erstteilprüfung</li><li>Fertigungsbegleitend</li><li>Endkontrolle</li>
+            </ul>
+            <h3>Geprüfte Qualität</h3>
+            <p>Auf Wunsch mit Messprotokoll.</p>
+          </article>
+          <article class="tile tile--time" data-spot>
+            <div class="plan" aria-hidden="true">
+              <span class="plan-bar"></span>
+              <span class="plan-week">Anfrage</span><span class="plan-week">Fertigung</span><span class="plan-week">Prüfung</span><span class="plan-week plan-week--due">Liefertermin</span>
+            </div>
+            <h3>Verlässliche Termine</h3>
+            <p>Realistische Liefertermine, die wir einhalten – und offene Kommunikation, falls sich etwas ändert.</p>
+          </article>
+          <article class="tile tile--loc" data-spot>
+            <span class="loc-pin" aria-hidden="true"></span>
+            <p class="coords">52.20° N · 8.05° E</p>
+            <h3>Made in Germany</h3>
+            <p>Gefertigt in Georgsmarienhütte, Landkreis Osnabrück.</p>
+          </article>
+          <a class="tile tile--cta" href="#schnellanfrage" data-sparks>
+            <span class="tile-kicker">Überzeugt?</span>
+            <span class="tile-cta-title">Angebot anfordern</span>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
         </div>
-        <ol class="steps steps--4">
-          <li class="step"><h3>Anfrage</h3><p>Sie senden uns Zeichnung oder 3D-Modell mit Werkstoff, Stückzahl und Wunschtermin.</p></li>
-          <li class="step"><h3>Angebot</h3><p>Wir prüfen die Machbarkeit, geben Hinweise zur Fertigung und erstellen ein verbindliches Angebot.</p></li>
-          <li class="step"><h3>Fertigung</h3><p>Ihre Teile entstehen auf unseren CNC-Dreh- und Fräsmaschinen – mit fertigungsbegleitender Kontrolle.</p></li>
-          <li class="step"><h3>Prüfung &amp; Lieferung</h3><p>Nach der Endkontrolle erhalten Sie Ihre Teile sicher verpackt und termingerecht.</p></li>
-        </ol>
       </div>
     </section>
 
@@ -297,7 +354,7 @@
           </details>
           <details class="faq-item">
             <summary>Welche Unterlagen benötigen Sie für ein Angebot?</summary>
-            <div class="faq-body"><p>Am besten eine technische Zeichnung als PDF und – falls vorhanden – ein 3D-Modell, z. B. im STEP-Format. Dazu Werkstoff, Stückzahl und Wunschtermin. Fehlt etwas, fragen wir einfach nach.</p></div>
+            <div class="faq-body"><p>Am besten eine technische Zeichnung als PDF und – falls vorhanden – ein 3D-Modell, z. B. im STEP-Format. Beides können Sie direkt im Anfrageformular hochladen. Dazu Werkstoff, Stückzahl und Wunschtermin. Fehlt etwas, fragen wir einfach nach.</p></div>
           </details>
           <details class="faq-item">
             <summary>Können Sie ohne Zeichnung nach Muster fertigen?</summary>
@@ -331,7 +388,7 @@
           <p class="lead">Beschreiben Sie kurz Ihr Bauteil. Wir prüfen die Machbarkeit und melden uns mit einem konkreten Angebot.</p>
           <ol class="quote-steps">
             <li><strong>Anfrage senden</strong>mit wenigen Angaben – dauert keine zwei Minuten</li>
-            <li><strong>Zeichnung nachreichen</strong>per E-Mail als PDF oder STEP</li>
+            <li><strong>Zeichnung hochladen</strong>PDF, STEP oder DXF direkt im Formular</li>
             <li><strong>Angebot erhalten</strong>verbindlich und transparent kalkuliert</li>
           </ol>
           <div class="hero-drawing blueprint">
@@ -385,7 +442,7 @@
         </div>
         <div class="quote-card">
           <h3>Angebot anfordern</h3>
-          <form class="form" action="kontakt-senden.php" method="post" data-contact-form>
+          <form class="form" action="kontakt-senden.php" method="post" enctype="multipart/form-data" data-contact-form>
             <input type="hidden" name="anliegen" value="Angebotsanfrage">
             <div class="form-grid">
               <div class="field">
@@ -406,7 +463,17 @@
               </div>
               <div class="field field--full">
                 <label for="q-nachricht">Bauteil / Anliegen <span class="req" aria-hidden="true">*</span></label>
-                <textarea id="q-nachricht" name="nachricht" rows="4" maxlength="5000" required placeholder="z. B. 200 Stück Welle aus 1.4305, Zeichnung folgt per E-Mail"></textarea>
+                <textarea id="q-nachricht" name="nachricht" rows="4" maxlength="5000" required placeholder="z. B. 200 Stück Welle aus 1.4305, Toleranzen laut Zeichnung"></textarea>
+              </div>
+              <div class="field field--full">
+                <span class="label" id="q-dateien-label">Zeichnung / CAD-Datei <span class="opt">(optional)</span></span>
+                <label class="dropzone">
+                  <input id="q-dateien" name="dateien[]" type="file" multiple accept=".pdf,.step,.stp,.igs,.iges,.dxf,.dwg,.zip,.jpg,.jpeg,.png" aria-describedby="q-dateien-label q-dateien-hint">
+                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+                  <span class="dropzone-text"><strong>Datei hierher ziehen</strong> oder <u>auswählen</u></span>
+                  <span class="dropzone-files" data-files aria-live="polite"></span>
+                </label>
+                <p class="field-hint" id="q-dateien-hint">PDF, STEP, IGES, DXF, DWG, ZIP oder Bild · bis zu 3 Dateien, zusammen max. 10&nbsp;MB</p>
               </div>
               <div class="field field--full checkbox">
                 <input id="q-datenschutz" name="datenschutz" type="checkbox" value="ja" required>
@@ -419,7 +486,7 @@
             </div>
             <input type="hidden" name="dauer" value="">
             <button class="btn btn--accent btn--block mt-md" type="submit">Angebot anfordern<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-            <p class="form-note mt-sm">Mit <span class="req">*</span> gekennzeichnete Felder sind Pflichtfelder. Kostenlos und unverbindlich.</p>
+            <p class="form-note mt-sm">Antwort in der Regel innerhalb von <span class="ph-text">1–2 Werktagen</span> · kostenlos und unverbindlich. Mit <span class="req">*</span> gekennzeichnete Felder sind Pflichtfelder.</p>
           </form>
           <p class="quote-alt"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2"/></svg><span>Lieber persönlich? <a href="tel:+495401000000"><span class="ph-text">+49&nbsp;5401&nbsp;000000</span></a></span></p>
         </div>
@@ -479,9 +546,9 @@
     </div>
   </footer>
 
-  <div class="mobile-cta">
+  <aside class="mobile-cta" aria-label="Schnellkontakt">
     <a class="btn btn--outline" href="tel:+495401000000"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2"/></svg>Anrufen</a>
     <a class="btn btn--accent" href="kontakt.html#formular">Angebot anfordern</a>
-  </div>
+  </aside>
 </body>
 </html>

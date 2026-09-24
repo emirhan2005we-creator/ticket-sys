@@ -7,6 +7,10 @@
  *
  * Vor dem Livegang die Adressen unten anpassen. ABSENDER muss eine Adresse auf der
  * eigenen Domain sein, sonst landen die Mails beim Empfänger häufig im Spam.
+ *
+ * Datei-Upload: Die Server-Einstellungen upload_max_filesize und post_max_size müssen
+ * mindestens 10 MB erlauben (beim Hoster meist voreingestellt, sonst per php.ini/.user.ini).
+ * Hochgeladene Dateien werden nur als E-Mail-Anhang versendet und nicht gespeichert.
  */
 declare(strict_types=1);
 
@@ -19,9 +23,15 @@ const ABSENDER_NAME  = 'Website AY-Tech';
 const SEITE_OK       = 'danke.html';
 const SEITE_FEHLER   = 'kontakt.html?status=fehler#formular';
 const SEITE_UNGUELTIG = 'kontakt.html?status=ungueltig#formular';
+const SEITE_DATEI    = 'kontakt.html?status=datei#formular';
 const MIN_SEKUNDEN   = 3; // schneller ausgefüllte Formulare gelten als Spam
 
 const ANLIEGEN = ['Angebotsanfrage', 'Technische Frage', 'Allgemeine Anfrage'];
+
+// Anhänge
+const MAX_DATEIEN = 3;
+const MAX_BYTES   = 10 * 1024 * 1024; // zusammen
+const ENDUNGEN    = ['pdf', 'step', 'stp', 'igs', 'iges', 'dxf', 'dwg', 'zip', 'jpg', 'jpeg', 'png'];
 
 // ---------------------------------------------------------------------------
 
@@ -44,8 +54,51 @@ function feld(string $name, int $max = 200, bool $mehrzeilig = false): string
     return mb_substr(trim($wert), 0, $max);
 }
 
+/**
+ * Prüft hochgeladene Dateien. Gibt eine Liste [name, pfad] zurück
+ * oder null, wenn eine Datei nicht erlaubt ist.
+ */
+function anhaenge(): ?array
+{
+    $f = $_FILES['dateien'] ?? null;
+    if (!is_array($f) || !is_array($f['name'] ?? null)) {
+        return [];
+    }
+    $liste = [];
+    $gesamt = 0;
+    foreach ($f['name'] as $i => $original) {
+        $fehler = $f['error'][$i] ?? UPLOAD_ERR_NO_FILE;
+        if ($fehler === UPLOAD_ERR_NO_FILE) {
+            continue;
+        }
+        $pfad = (string) ($f['tmp_name'][$i] ?? '');
+        if ($fehler !== UPLOAD_ERR_OK || !is_uploaded_file($pfad)) {
+            return null;
+        }
+        $endung = strtolower(pathinfo((string) $original, PATHINFO_EXTENSION));
+        if (!in_array($endung, ENDUNGEN, true)) {
+            return null;
+        }
+        $gesamt += (int) filesize($pfad);
+        // Dateiname: Umlaute umschreiben, nur sichere Zeichen behalten
+        $name = strtr(basename((string) $original), ['ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ß' => 'ss']);
+        $name = trim((string) preg_replace('/[^A-Za-z0-9._-]+/', '_', $name), '._');
+        $stamm = substr(pathinfo($name, PATHINFO_FILENAME), 0, 60);
+        $liste[] = ['name' => ($stamm !== '' ? $stamm : 'datei') . '.' . $endung, 'pfad' => $pfad];
+    }
+    if (count($liste) > MAX_DATEIEN || $gesamt > MAX_BYTES) {
+        return null;
+    }
+    return $liste;
+}
+
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     weiterleiten('kontakt.html');
+}
+
+// Zu große Uploads: PHP verwirft dann das komplette Formular
+if (empty($_POST) && (int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > 0) {
+    weiterleiten(SEITE_DATEI);
 }
 
 // ---- Spam-Schutz ----------------------------------------------------------
@@ -84,6 +137,11 @@ if (!$gueltig) {
     weiterleiten(SEITE_UNGUELTIG);
 }
 
+$dateien = anhaenge();
+if ($dateien === null) {
+    weiterleiten(SEITE_DATEI);
+}
+
 // ---- E-Mail zusammenstellen -----------------------------------------------
 $betreff = mb_encode_mimeheader(
     '[Website] ' . $anliegen . ' von ' . $name . ($firma !== '' ? ' (' . $firma . ')' : ''),
@@ -108,20 +166,43 @@ $zeilen = [
     $nachricht,
     str_repeat('-', 50),
     '',
+    'Anhänge:      ' . ($dateien ? implode(', ', array_column($dateien, 'name')) : '–'),
+    '',
     'Datenschutzhinweis bestätigt: ja',
     'Gesendet am: ' . date('d.m.Y, H:i') . ' Uhr',
 ];
 $text = implode("\r\n", str_replace("\n", "\r\n", $zeilen));
 
-$kopfzeilen = implode("\r\n", [
+$kopf = [
     'From: ' . mb_encode_mimeheader(ABSENDER_NAME, 'UTF-8', 'Q') . ' <' . ABSENDER . '>',
     'Reply-To: ' . $email,
     'MIME-Version: 1.0',
-    'Content-Type: text/plain; charset=UTF-8',
-    'Content-Transfer-Encoding: 8bit',
     'X-Mailer: AY-Tech Kontaktformular',
-]);
+];
 
-$gesendet = mail(EMPFAENGER, $betreff, $text, $kopfzeilen, '-f' . ABSENDER);
+if ($dateien) {
+    // Mehrteilige Nachricht mit Anhängen
+    $grenze = 'AYT-' . bin2hex(random_bytes(12));
+    $kopf[] = 'Content-Type: multipart/mixed; boundary="' . $grenze . '"';
+    $inhalt = '--' . $grenze . "\r\n"
+        . "Content-Type: text/plain; charset=UTF-8\r\n"
+        . "Content-Transfer-Encoding: 8bit\r\n\r\n"
+        . $text . "\r\n";
+    foreach ($dateien as $datei) {
+        $inhalt .= '--' . $grenze . "\r\n"
+            . 'Content-Type: application/octet-stream; name="' . $datei['name'] . "\"\r\n"
+            . "Content-Transfer-Encoding: base64\r\n"
+            . 'Content-Disposition: attachment; filename="' . $datei['name'] . "\"\r\n\r\n"
+            . chunk_split(base64_encode((string) file_get_contents($datei['pfad'])))
+            . "\r\n";
+    }
+    $inhalt .= '--' . $grenze . '--';
+} else {
+    $kopf[] = 'Content-Type: text/plain; charset=UTF-8';
+    $kopf[] = 'Content-Transfer-Encoding: 8bit';
+    $inhalt = $text;
+}
+
+$gesendet = mail(EMPFAENGER, $betreff, $inhalt, implode("\r\n", $kopf), '-f' . ABSENDER);
 
 weiterleiten($gesendet ? SEITE_OK : SEITE_FEHLER);

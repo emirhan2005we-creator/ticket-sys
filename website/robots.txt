@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /kontakt-senden.php
+
+Sitemap: https://www.ihre-domain.de/sitemap.xml

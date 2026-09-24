@@ -42,10 +42,9 @@
   document.querySelectorAll("[data-year]").forEach(function (el) { el.textContent = year; });
 
   /* Kontaktformular ------------------------------------------------------ */
-  var form = document.querySelector("[data-contact-form]");
+  var started = Date.now();
 
-  if (form) {
-    var started = Date.now();
+  document.querySelectorAll("[data-contact-form]").forEach(function (form) {
     var duration = form.querySelector('input[name="dauer"]');
     var submit = form.querySelector('[type="submit"]');
     var submitText = submit ? submit.textContent : "";
@@ -66,7 +65,7 @@
         submit.textContent = submitText;
       }
     });
-  }
+  });
 
   /* Dezente Einblend-Animation beim Scrollen ---------------------------- */
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

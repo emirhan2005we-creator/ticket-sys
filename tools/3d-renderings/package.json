@@ -1,0 +1,15 @@
+{
+  "name": "ay-tech-3d-renderings",
+  "private": true,
+  "description": "Erzeugt die 3D-Bauteilansichten der AY-Tech-Website (three.js im Headless-Chromium)",
+  "scripts": {
+    "serve": "npx http-server -p 8100 -s .",
+    "render": "node capture.js out hero:1400:1100:exp=1.1 shaft:1200:900:exp=1.1 shaftDetail:1200:900:exp=1.1 housing:1200:900:exp=1.1 flange:1200:900:exp=1.1 adapter:1200:900:exp=1.1 bushing:1200:900:exp=1.1",
+    "export": "node export.js && node og.js"
+  },
+  "dependencies": {
+    "playwright-core": "^1.55.0",
+    "sharp": "^0.35.4",
+    "three": "^0.186.1"
+  }
+}

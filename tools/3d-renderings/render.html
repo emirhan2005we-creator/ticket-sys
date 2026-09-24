@@ -1,0 +1,258 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>html,body{margin:0;background:transparent}canvas{display:block}</style>
+<script type="importmap">
+{ "imports": {
+  "three": "/node_modules/three/build/three.module.js",
+  "three/addons/": "/node_modules/three/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<script type="module">
+import * as THREE from 'three';
+import { mergeGeometries, toCreasedNormals } from 'three/addons/utils/BufferGeometryUtils.js';
+
+const q = new URLSearchParams(location.search);
+const W = +q.get('w') || 1600, H = +q.get('h') || 1200, SS = +q.get('ss') || 2;
+const NAME = q.get('scene') || 'hero';
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.setSize(W * SS, H * SS);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = +(q.get('exp') || 1.0);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.VSMShadowMap;
+renderer.setClearColor(0x000000, 0);
+document.body.appendChild(renderer.domElement);
+window.renderer = renderer;
+
+/* ---------- Studio-Umgebung (dunkel, mit Softboxen) ---------- */
+function studioEnv() {
+  const s = new THREE.Scene();
+  s.background = new THREE.Color(0x1a2636);
+  const box = (w, h, pos, color, k) => {
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h),
+      new THREE.MeshBasicMaterial({ color: new THREE.Color(color).multiplyScalar(k), side: THREE.DoubleSide }));
+    m.position.set(...pos); m.lookAt(0, 0, 0); s.add(m);
+  };
+  box(12, 6, [0, 7, 1], 0xffffff, 3.2);        // große Deckenbox
+  box(3, 8, [-7, 2, 2], 0xf2f6ff, 2.6);        // links
+  box(3, 8, [7, 1.8, -1], 0xa9ccf5, 2.4);      // rechts, bläulich
+  box(14, 2.4, [0, 1.6, -8], 0xffffff, 2.0);   // hinten
+  box(14, 1.6, [0, 0.8, 8], 0xdbe6f2, 1.4);    // vorne
+  box(4, 4, [-5, 4, -5], 0xffffff, 1.6);
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), new THREE.MeshBasicMaterial({ color: 0x46566a }));
+  floor.rotation.x = -Math.PI / 2; floor.position.y = -3; s.add(floor);
+  const pm = new THREE.PMREMGenerator(renderer);
+  return pm.fromScene(s, 0.015).texture;
+}
+
+/* ---------- Drehriefen als Bump-Textur ---------- */
+function turningTexture() {
+  const c = document.createElement('canvas'); c.width = 8; c.height = 2048;
+  const g = c.getContext('2d');
+  for (let y = 0; y < c.height; y++) {
+    const v = 128 + (Math.random() - 0.5) * 70 + Math.sin(y * 1.7) * 28;
+    g.fillStyle = `rgb(${v | 0},${v | 0},${v | 0})`; g.fillRect(0, y, c.width, 1);
+  }
+  const t = new THREE.CanvasTexture(c);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  return t;
+}
+function millingTexture() {
+  const c = document.createElement('canvas'); c.width = c.height = 1024;
+  const g = c.getContext('2d');
+  g.fillStyle = 'rgb(128,128,128)'; g.fillRect(0, 0, 1024, 1024);
+  g.lineWidth = 1.2;
+  for (let row = -1; row < 12; row++) for (let i = 0; i < 26; i++) {
+    const cx = row * 90 + 40, cy = i * 44 - 40, r = 70;
+    g.strokeStyle = `rgba(${Math.random() < .5 ? 90 : 170},${0},${0},0)`;
+    const v = 100 + Math.random() * 60;
+    g.strokeStyle = `rgba(${v},${v},${v},0.55)`;
+    g.beginPath(); g.arc(cx, cy, r, -0.6, 0.6); g.stroke();
+  }
+  const t = new THREE.CanvasTexture(c);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  return t;
+}
+const turnTex = turningTexture();
+const millTex = millingTexture();
+
+const MAT = {
+  steel: new THREE.MeshPhysicalMaterial({ color: 0xdfe4ea, metalness: 1, roughness: 0.2, bumpMap: turnTex, bumpScale: 0.35, envMapIntensity: 1.25 }),
+  steelDark: new THREE.MeshPhysicalMaterial({ color: 0x9aa3ad, metalness: 1, roughness: 0.3, bumpMap: turnTex, bumpScale: 0.35 }),
+  alu: new THREE.MeshPhysicalMaterial({ color: 0xeef1f4, metalness: 1, roughness: 0.3, bumpMap: millTex, bumpScale: 0.25, envMapIntensity: 1.15 }),
+  brass: new THREE.MeshPhysicalMaterial({ color: 0xe6bb66, metalness: 1, roughness: 0.22, bumpMap: turnTex, bumpScale: 0.35, envMapIntensity: 1.2 }),
+  black: new THREE.MeshPhysicalMaterial({ color: 0x33383f, metalness: 0.85, roughness: 0.42 }),
+};
+
+/* ---------- Geometrie-Helfer ---------- */
+// Drehteil aus Profil (r, y); jede Kante hart, Riefen maßstabsgetreu
+function lathe(profile, seg = 192) {
+  const parts = [];
+  for (let i = 0; i < profile.length - 1; i++) {
+    const [r1, y1] = profile[i], [r2, y2] = profile[i + 1];
+    if (r1 === r2 && y1 === y2) continue;
+    const g = new THREE.LatheGeometry([new THREE.Vector2(r1, y1), new THREE.Vector2(r2, y2)], seg);
+    const len = Math.hypot(r2 - r1, y2 - y1);
+    const uv = g.attributes.uv;
+    for (let k = 0; k < uv.count; k++) uv.setY(k, uv.getY(k) * len / 40 + y1 / 40);
+    parts.push(g);
+  }
+  return mergeGeometries(parts);
+}
+// Gewindegänge als Rillenprofil
+function thread(rOuter, rInner, y0, y1, pitch) {
+  const pts = [];
+  for (let y = y0; y < y1 - 1e-6; y += pitch) {
+    pts.push([rInner, y], [rOuter, y + pitch * 0.45], [rOuter, y + pitch * 0.55]);
+  }
+  pts.push([rInner, y1]);
+  return pts;
+}
+function extrude(shape, depth, bevel = 0.8) {
+  let g = new THREE.ExtrudeGeometry(shape, { depth, bevelEnabled: bevel > 0, bevelThickness: bevel, bevelSize: bevel, bevelSegments: 1, curveSegments: 128 });
+  g = toCreasedNormals(g, Math.PI / 7);
+  return g;
+}
+function roundedRect(w, h, r) {
+  const s = new THREE.Shape();
+  const x = -w / 2, y = -h / 2;
+  s.moveTo(x + r, y); s.lineTo(x + w - r, y); s.quadraticCurveTo(x + w, y, x + w, y + r);
+  s.lineTo(x + w, y + h - r); s.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  s.lineTo(x + r, y + h); s.quadraticCurveTo(x, y + h, x, y + h - r);
+  s.lineTo(x, y + r); s.quadraticCurveTo(x, y, x + r, y);
+  return s;
+}
+function circlePath(cx, cy, r) { const p = new THREE.Path(); p.absarc(cx, cy, r, 0, Math.PI * 2, true); return p; }
+function mesh(geo, mat) { const m = new THREE.Mesh(geo, mat); m.castShadow = true; m.receiveShadow = true; return m; }
+
+/* ---------- Bauteile ---------- */
+function makeShaft(mat = MAT.steel) {
+  const p = [
+    [0, 0], [9.2, 0], [10, 0.8], [10, 24], [13.2, 24], [14, 24.8], [14, 56],
+    [12.4, 56], [12.4, 59.5], [14, 59.5], [14, 78], [19.2, 78], [20, 78.8], [20, 90], [19.2, 90.8],
+    [12.6, 90.8], [12, 91.4], [12, 97],
+    ...thread(12, 11.1, 97, 128, 1.5),
+    [10.4, 128.8], [0, 128.8],
+  ];
+  const g = new THREE.Group();
+  g.add(mesh(lathe(p), mat));
+  // Passfeder in der Nut
+  const key = mesh(extrude(roundedRect(22, 6, 3), 1.2, 0.3), MAT.steelDark);
+  key.rotation.set(0, 0, Math.PI / 2); key.position.set(0, 40, 13.2);
+  g.add(key);
+  return g;
+}
+function makeFlange(mat = MAT.steel) {
+  const shape = new THREE.Shape(); shape.absarc(0, 0, 60, 0, Math.PI * 2, false);
+  shape.holes.push(circlePath(0, 0, 15.5));
+  for (let i = 0; i < 6; i++) { const a = i * Math.PI / 3 + Math.PI / 6; shape.holes.push(circlePath(Math.cos(a) * 45, Math.sin(a) * 45, 5.6)); }
+  const disc = mesh(extrude(shape, 12, 1.0), mat);
+  disc.rotation.x = -Math.PI / 2;
+  const hub = mesh(lathe([[15.5, 12], [30, 12], [30, 30], [29.2, 30.8], [16.3, 30.8], [15.5, 30], [15.5, 12]]), mat);
+  const g = new THREE.Group(); g.add(disc, hub);
+  disc.position.y = 1;
+  return g;
+}
+function makeHousing(mat = MAT.alu) {
+  const holes = [[-48, -28], [48, -28], [-48, 28], [48, 28]];
+  const base = roundedRect(120, 80, 7);
+  holes.forEach(([x, y]) => base.holes.push(circlePath(x, y, 3.6)));
+  base.holes.push(circlePath(0, 0, 9));
+  const frame = roundedRect(120, 80, 7);
+  holes.forEach(([x, y]) => frame.holes.push(circlePath(x, y, 5.8)));
+  const pocket = new THREE.Path();
+  { const w = 76, h = 48, r = 8, x = -w / 2, y = -h / 2;
+    pocket.moveTo(x + r, y); pocket.quadraticCurveTo(x, y, x, y + r); pocket.lineTo(x, y + h - r);
+    pocket.quadraticCurveTo(x, y + h, x + r, y + h); pocket.lineTo(x + w - r, y + h);
+    pocket.quadraticCurveTo(x + w, y + h, x + w, y + h - r); pocket.lineTo(x + w, y + r);
+    pocket.quadraticCurveTo(x + w, y, x + w - r, y); pocket.lineTo(x + r, y); }
+  frame.holes.push(pocket);
+  const g = new THREE.Group();
+  const b = mesh(extrude(base, 10, 0.6), mat); b.rotation.x = -Math.PI / 2; b.position.y = 0.6;
+  const f = mesh(extrude(frame, 20, 0.8), mat); f.rotation.x = -Math.PI / 2; f.position.y = 11;
+  g.add(b, f);
+  return g;
+}
+function makeAdapter(mat = MAT.brass) {
+  const hex = new THREE.Shape();
+  for (let i = 0; i < 6; i++) { const a = i * Math.PI / 3; const x = Math.cos(a) * 18.5, y = Math.sin(a) * 18.5; i ? hex.lineTo(x, y) : hex.moveTo(x, y); }
+  hex.closePath(); hex.holes.push(circlePath(0, 0, 6));
+  const h = mesh(extrude(hex, 14, 1.2), mat); h.rotation.x = -Math.PI / 2; h.position.y = 17.2;
+  const top = mesh(lathe([[6, 32], [10.6, 32], [11, 32.6], ...thread(11, 10.1, 33, 46, 1.5), [9.6, 46.8], [6, 46.8]]), mat);
+  const bottom = mesh(lathe([[6, 0], [8.2, 0], [9, 0.8], ...thread(9, 8.2, 1, 12, 1.25), [9, 12], [12, 12], [12, 16], [6, 16]]), mat);
+  const g = new THREE.Group(); g.add(h, top, bottom); return g;
+}
+function makeBushing(mat = MAT.brass) {
+  const p = [[10, 0.6], [10.6, 0], [14.4, 0], [15, 0.6], [15, 26], [19.4, 26], [20, 26.6], [20, 31.4], [19.4, 32], [10.6, 32], [10, 31.4], [10, 0.6]];
+  return mesh(lathe(p), mat);
+}
+
+/* ---------- Szenen ---------- */
+const scene = new THREE.Scene();
+scene.environment = studioEnv();
+const camera = new THREE.PerspectiveCamera(26, W / H, 1, 5000);
+
+const key = new THREE.DirectionalLight(0xffffff, 3.0);
+key.position.set(140, 300, 180); key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048); key.shadow.radius = 14; key.shadow.blurSamples = 24; key.shadow.bias = -0.0004;
+Object.assign(key.shadow.camera, { left: -260, right: 260, top: 260, bottom: -260, near: 10, far: 1000 });
+scene.add(key);
+const rim = new THREE.DirectionalLight(0x9cc4ff, 1.6); rim.position.set(-260, 140, -240); scene.add(rim);
+scene.add(new THREE.HemisphereLight(0xdfe8f5, 0x0b1624, 0.35));
+
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(2000, 2000), new THREE.ShadowMaterial({ opacity: +(q.get('shadow') || 0.5) }));
+floor.rotation.x = -Math.PI / 2; floor.receiveShadow = true; scene.add(floor);
+
+function lay(obj, y) { obj.rotation.z = Math.PI / 2; obj.position.y = y; return obj; }
+const target = new THREE.Vector3();
+
+const SCENES = {
+  shaft() {
+    const s = lay(makeShaft(), 20); s.rotation.y = -0.45; s.position.x = 60; s.position.z = 10; scene.add(s);
+    camera.position.set(40, 120, 250); target.set(-5, 14, 0);
+  },
+  shaftDetail() {
+    const s = lay(makeShaft(), 20); s.rotation.y = 0.35; s.position.set(64, 20, -10); scene.add(s);
+    const b = makeBushing(); b.position.set(30, 0, 58); scene.add(b);
+    camera.position.set(-10, 125, 265); target.set(0, 16, 14);
+  },
+  housing() {
+    const h = makeHousing(); h.rotation.y = -0.5; scene.add(h);
+    camera.position.set(130, 190, 210); target.set(0, 8, 0);
+  },
+  flange() {
+    const f = makeFlange(); f.rotation.y = 0.2; scene.add(f);
+    camera.position.set(110, 170, 190); target.set(0, 10, 0);
+  },
+  adapter() {
+    const a = makeAdapter(); a.position.set(-18, 0, 0); scene.add(a);
+    const a2 = makeAdapter(MAT.steel); lay(a2, 18.5); a2.rotation.y = 0.9; a2.position.set(40, 18.5, 28); scene.add(a2);
+    camera.position.set(80, 110, 190); target.set(8, 18, 8);
+  },
+  bushing() {
+    [[-26, 0, 0], [22, 0, -18], [18, 0, 34]].forEach((p, i) => { const b = makeBushing(); b.position.set(...p); if (i === 2) { lay(b, 20); b.rotation.y = 0.6; b.position.set(28, 20, 38); } scene.add(b); });
+    camera.position.set(70, 120, 190); target.set(0, 12, 8);
+  },
+  hero() {
+    const f = makeFlange(); f.position.set(-88, 0, -52); f.rotation.y = 0.3; scene.add(f);
+    const h = makeHousing(); h.position.set(92, 0, -62); h.rotation.y = -0.42; scene.add(h);
+    const s = lay(makeShaft(), 20); s.rotation.y = -0.12; s.position.set(58, 20, 52); scene.add(s);
+    const a = makeAdapter(); a.position.set(-104, 0, 72); scene.add(a);
+    const b = makeBushing(); b.position.set(104, 0, 76); scene.add(b);
+    camera.position.set(0, 300, 455); target.set(0, 6, 8);
+  },
+};
+SCENES[NAME]();
+camera.lookAt(target);
+renderer.render(scene, camera);
+window.__done = true;
+</script>
+</body>
+</html>

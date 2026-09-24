@@ -1100,7 +1100,7 @@ hr { border: 0; border-top: 1px solid var(--steel-200); margin: 2rem 0; }
   .hero-img { width: 118%; max-width: none; margin-left: -9%; }
 }
 @media (max-width: 639px) {
-  .hero-visual { padding: 0; }
+  .hero-visual { padding: 0; margin-top: -1.25rem; }
   .hero-chip { position: static; margin-top: 0.75rem; }
 }
 

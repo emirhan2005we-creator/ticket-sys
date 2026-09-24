@@ -68,6 +68,38 @@
     });
   }
 
+  /* Dezente Einblend-Animation beim Scrollen ---------------------------- */
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (!reduceMotion && "IntersectionObserver" in window) {
+    var staggered = ".card, .feature, .step, .material, .timeline li";
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var el = entry.target;
+        observer.unobserve(el);
+        el.classList.add("is-visible");
+        // Klassen danach entfernen, damit Hover-Übergänge wieder normal greifen
+        setTimeout(function () {
+          el.classList.remove("reveal", "is-visible");
+          el.style.removeProperty("--reveal-delay");
+        }, 1300);
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+
+    document.querySelectorAll(".section-head, .split > *, .cta-inner, .form, .contact-card, " + staggered)
+      .forEach(function (el) {
+        // Bereits sichtbare Elemente nicht ausblenden (kein Flackern beim Laden)
+        if (el.getBoundingClientRect().top < window.innerHeight) return;
+        if (el.matches(staggered) && el.parentElement) {
+          var index = Array.prototype.indexOf.call(el.parentElement.children, el);
+          el.style.setProperty("--reveal-delay", Math.min(index, 5) * 80 + "ms");
+        }
+        el.classList.add("reveal");
+        observer.observe(el);
+      });
+  }
+
   /* Statusmeldung nach dem Absenden (?status=fehler | ungueltig) --------- */
   var status = new URLSearchParams(window.location.search).get("status");
   if (status) {

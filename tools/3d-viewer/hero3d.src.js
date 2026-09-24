@@ -172,7 +172,6 @@ export function initViewer(root, { reducedMotion = false } = {}) {
   camera.position.set(0, 40, 430); camera.lookAt(0, 0, 0);
   const key = new DirectionalLight(0xffffff, 2.6); key.position.set(160, 260, 220); scene.add(key);
   const rim = new DirectionalLight(0x9cc4ff, 1.8); rim.position.set(-260, 120, -220); scene.add(rim);
-  const warm = new DirectionalLight(0xff9a4a, 0.25); warm.position.set(240, -60, 120); scene.add(warm);
   scene.add(new HemisphereLight(0xdfe8f5, 0x0b1624, 0.35));
   scene.add(contactShadow());
 

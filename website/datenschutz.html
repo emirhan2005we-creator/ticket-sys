@@ -20,9 +20,9 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preload" href="assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/style.css?v=3">
+  <link rel="stylesheet" href="assets/css/style.css?v=4">
   <script>document.documentElement.classList.replace("no-js", "js");</script>
-  <script src="assets/js/main.js?v=3" defer></script>
+  <script src="assets/js/main.js?v=4" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
@@ -53,10 +53,12 @@
         </ul>
       </nav>
     </div>
+    <div class="scroll-progress" aria-hidden="true"></div>
   </header>
 
   <main id="main" tabindex="-1">
     <section class="page-hero" aria-labelledby="page-title">
+      <div class="hero-aurora" aria-hidden="true"><span></span><span></span><span></span></div>
       <div class="page-hero-art"><svg class="art" viewBox="0 0 400 300" aria-hidden="true" focusable="false"><path class="c" d="M200 34V266M84 150H316"/>
       <circle class="f" cx="200" cy="150" r="98"/><circle cx="200" cy="150" r="86"/>
       <circle cx="200" cy="150" r="36"/><path d="M193 115V105H207V115"/>
@@ -70,7 +72,7 @@
             <li><span aria-current="page">Datenschutz</span></li>
           </ol>
         </nav>
-        <h1 id="page-title">Datenschutzerklärung</h1>
+        <h1 id="page-title" class="words"><span class="w"><span class="d1">Datenschutzerklärung</span></span></h1>
         <p class="lead">Informationen zur Verarbeitung personenbezogener Daten nach Art. 13 DSGVO.</p>
       </div>
     </section>
@@ -120,7 +122,7 @@
           <p>Wenn Sie uns per E-Mail oder Telefon kontaktieren, verarbeiten wir Ihre Angaben einschließlich der daraus hervorgehenden personenbezogenen Daten zur Bearbeitung Ihres Anliegens. Rechtsgrundlagen und Speicherdauer entsprechen den Angaben unter Ziffer 4.</p>
 
           <h2>6. Cookies, Analyse und Schriftarten</h2>
-          <p>Wir setzen keine Cookies und keine Analyse- oder Tracking-Werkzeuge ein. Die auf dieser Website verwendete Schriftart „Inter“ ist lokal auf unserem Server gespeichert; beim Aufruf der Seiten wird keine Verbindung zu Servern Dritter (etwa Google Fonts) aufgebaut.</p>
+          <p>Wir setzen keine Cookies und keine Analyse- oder Tracking-Werkzeuge ein. Die auf dieser Website verwendeten Schriftarten „Inter“ und „Space Grotesk“ sowie die Programmbibliothek für die 3D-Darstellung sind lokal auf unserem Server gespeichert; beim Aufruf der Seiten wird keine Verbindung zu Servern Dritter (etwa Google Fonts oder Content-Delivery-Netzwerke) aufgebaut.</p>
 
           <h2>7. Links zu Kartendiensten</h2>
           <p>Auf unserer Kontaktseite verlinken wir auf Google Maps (Google Ireland Limited) und OpenStreetMap (OpenStreetMap Foundation). Die Karten sind nicht eingebettet: Eine Datenübertragung an den jeweiligen Anbieter findet erst statt, wenn Sie den Link aktiv anklicken. Für die anschließende Verarbeitung ist der jeweilige Anbieter verantwortlich. Informationen finden Sie in den Datenschutzhinweisen von <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google<span class="visually-hidden"> (öffnet in neuem Tab)</span></a> und der <a href="https://osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener noreferrer">OpenStreetMap Foundation<span class="visually-hidden"> (öffnet in neuem Tab)</span></a>.</p>
@@ -205,6 +207,7 @@
         <p class="footer-reg">Amtsgericht Osnabrück<br>HRB 219627</p>
       </div>
     </div>
+    <p class="footer-giant" aria-hidden="true">AY-TECH</p>
     <div class="container">
       <div class="footer-bottom">
         <p>© <span data-year>2026</span> AY-Tech Präzisionsteile GmbH</p>
@@ -215,7 +218,7 @@
 
   <div class="mobile-cta">
     <a class="btn btn--outline" href="tel:+495401000000"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2"/></svg>Anrufen</a>
-    <a class="btn btn--primary" href="kontakt.html#formular">Angebot anfordern</a>
+    <a class="btn btn--accent" href="kontakt.html#formular">Angebot anfordern</a>
   </div>
 </body>
 </html>

@@ -20,8 +20,9 @@ Kein Framework, kein Build-Schritt: Die Dateien können direkt zu jedem Hoster m
 
 ```
 assets/css/style.css   Gesamtes Styling (Design-Tokens oben in :root)
-assets/js/main.js      Mobile Navigation, Formular-Hilfen
-assets/fonts/          Inter (lokal, SIL Open Font License)
+assets/js/main.js      Navigation, Formulare, Animationen (Funken, Neigen, Zähler, Einblenden)
+assets/js/hero3d.js    Interaktiver 3D-Viewer der Startseite (Quelle: tools/3d-viewer)
+assets/fonts/          Inter + Space Grotesk (lokal, SIL Open Font License)
 assets/img/            3D-Bauteilansichten (WebP, je groß + klein), og-image.jpg; hier auch echte Fotos ablegen
 .htaccess              Apache: 404-Seite, Caching, Komprimierung, Sicherheits-Header
 robots.txt, sitemap.xml, favicon.svg
@@ -80,6 +81,17 @@ grep -rn "ph-text\|class=\"ph\|ihre-domain\|20XX\|Musterstraße\|000000" --inclu
 - Nach Änderungen an `style.css` oder `main.js` die Version in den `<head>`-Links hochzählen
   (`style.css?v=1` → `?v=2`), damit Browser die neue Datei laden.
 - Farben, Schriftgrößen und Abstände zentral in `:root` in `style.css` anpassen.
+
+## Design und Animationen
+
+- Farben: Dunkelblau/Stahl, Akzent „Funkenorange“ (`--accent` in `style.css`) für Buttons und Highlights
+- Überschriften in Space Grotesk, Fließtext in Inter
+- Startseite: interaktives 3D-Bauteil (drehbar, 4 Bauteile per Tab), Laufband mit Schlagworten,
+  hochzählende Kennzahl, Wort-für-Wort-Animation der Überschrift, metallischer Glanz auf „Präzision.“
+- Überall: Funkenflug beim Klick auf orange Buttons, magnetische Buttons, Karten neigen sich zur Maus,
+  Lichtkegel folgt dem Zeiger, Unterstreichungen zeichnen sich beim Scrollen ein,
+  Fortschrittsbalken im Header, weiche Seitenübergänge (View Transitions)
+- Alle Bewegungen entfallen automatisch, wenn im Betriebssystem „Bewegung reduzieren“ aktiv ist
 
 ## Technik und Datenschutz
 

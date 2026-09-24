@@ -20,9 +20,9 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preload" href="assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/style.css?v=3">
+  <link rel="stylesheet" href="assets/css/style.css?v=4">
   <script>document.documentElement.classList.replace("no-js", "js");</script>
-  <script src="assets/js/main.js?v=3" defer></script>
+  <script src="assets/js/main.js?v=4" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
@@ -53,10 +53,12 @@
         </ul>
       </nav>
     </div>
+    <div class="scroll-progress" aria-hidden="true"></div>
   </header>
 
   <main id="main" tabindex="-1">
     <section class="page-hero" aria-labelledby="page-title">
+      <div class="hero-aurora" aria-hidden="true"><span></span><span></span><span></span></div>
       <div class="page-hero-art"><svg class="art" viewBox="0 0 400 300" aria-hidden="true" focusable="false"><rect class="f" x="40" y="96" width="320" height="26" rx="3"/>
       <path d="M60 96v12M70 96v7M80 96v7M90 96v7M100 96v7M110 96v12M120 96v7M130 96v7M140 96v7M150 96v7M160 96v12M170 96v7M180 96v7M190 96v7M200 96v7M210 96v12M220 96v7M230 96v7M240 96v7M250 96v7M260 96v12M270 96v7M280 96v7M290 96v7M300 96v7M310 96v12M320 96v7M330 96v7M340 96v7"/>
       <path class="f" d="M40 122H74V204L60 226H40Z"/><path d="M40 96V70H52L60 96"/>
@@ -73,7 +75,7 @@
           </ol>
         </nav>
         <p class="eyebrow">Qualitätssicherung</p>
-        <h1 id="page-title">Qualität</h1>
+        <h1 id="page-title" class="words"><span class="w"><span class="d1">Qualität</span></span></h1>
         <p class="lead">Präzision ist messbar. Deshalb ist Qualitätssicherung bei uns fester Bestandteil jedes Fertigungsschritts.</p>
       </div>
     </section>
@@ -128,12 +130,12 @@
         </div>
         <!-- WICHTIG: Nur Zertifikate/Nachweise nennen, die tatsächlich vorliegen! Sonst Abschnitt entfernen. -->
         <div class="grid grid--2">
-          <article class="card card--flat">
+          <article data-tilt class="card card--flat">
             <div class="icon-box"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.5 4.5 5.5v6c0 4.8 3.2 8.5 7.5 10 4.3-1.5 7.5-5.2 7.5-10v-6z"/><path d="m8.8 12 2.2 2.2 4.4-4.4"/></svg></div>
             <h3><span class="ph-text">DIN EN ISO 9001</span></h3>
             <p><span class="ph-text">Zertifiziertes Qualitätsmanagementsystem seit 20XX – bzw. „in Vorbereitung“. Zertifikat als PDF verlinken.</span></p>
           </article>
-          <article class="card card--flat">
+          <article data-tilt class="card card--flat">
             <div class="icon-box"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 2.5H6.5a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V8z"/><path d="M14 2.5V8h5.5M8.5 13h7M8.5 16.5h5"/></svg></div>
             <h3>Prüf- und Materialnachweise</h3>
             <p><span class="ph-text">z. B. Messprotokolle, Erstmusterprüfberichte (EMPB) und Materialzeugnisse 3.1 nach EN 10204 auf Anfrage.</span></p>
@@ -210,7 +212,7 @@
           <p>Sprechen Sie uns auf Ihre Anforderungen an Toleranzen, Prüfumfang und Dokumentation an.</p>
         </div>
         <div class="btn-row">
-          <a class="btn btn--silver" href="kontakt.html">Angebot anfordern</a>
+          <a class="btn btn--accent" href="kontakt.html">Angebot anfordern<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
           <a class="btn btn--light" href="tel:+495401000000"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2"/></svg><span><span class="ph-text">+49&nbsp;5401&nbsp;000000</span></span></a>
         </div>
       </div>
@@ -260,6 +262,7 @@
         <p class="footer-reg">Amtsgericht Osnabrück<br>HRB 219627</p>
       </div>
     </div>
+    <p class="footer-giant" aria-hidden="true">AY-TECH</p>
     <div class="container">
       <div class="footer-bottom">
         <p>© <span data-year>2026</span> AY-Tech Präzisionsteile GmbH</p>
@@ -270,7 +273,7 @@
 
   <div class="mobile-cta">
     <a class="btn btn--outline" href="tel:+495401000000"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2"/></svg>Anrufen</a>
-    <a class="btn btn--primary" href="kontakt.html#formular">Angebot anfordern</a>
+    <a class="btn btn--accent" href="kontakt.html#formular">Angebot anfordern</a>
   </div>
 </body>
 </html>

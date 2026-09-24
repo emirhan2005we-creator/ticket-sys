@@ -20,9 +20,9 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preload" href="assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/style.css?v=3">
+  <link rel="stylesheet" href="assets/css/style.css?v=4">
   <script>document.documentElement.classList.replace("no-js", "js");</script>
-  <script src="assets/js/main.js?v=3" defer></script>
+  <script src="assets/js/main.js?v=4" defer></script>
   <!-- Strukturierte Daten: Adresse/Telefon/E-Mail/Domain bei Livegang anpassen -->
   <script type="application/ld+json">
 {
@@ -79,29 +79,47 @@
         </ul>
       </nav>
     </div>
+    <div class="scroll-progress" aria-hidden="true"></div>
   </header>
 
   <main id="main" tabindex="-1">
-    <section class="hero" aria-labelledby="hero-title">
+    <section class="hero hero--xl" aria-labelledby="hero-title">
+      <div class="hero-aurora" aria-hidden="true"><span></span><span></span><span></span></div>
       <div class="container hero-grid">
         <div>
-          <p class="eyebrow">Präzision aus Erfahrung</p>
-          <h1 id="hero-title">Präzisions- und Sonderteile nach Zeichnung&nbsp;– CNC&#8209;gedreht und CNC&#8209;gefräst.</h1>
-          <p class="lead">Die AY-Tech Präzisionsteile GmbH aus Georgsmarienhütte fertigt Dreh- und Frästeile für Industrie, Maschinenbau und Automotive – vom Einzelteil über den Prototyp bis zur Serie. Mit über 35&nbsp;Jahren Erfahrung in der Metallbearbeitung.</p>
+          <p class="pill"><span class="pill-dot" aria-hidden="true"></span>CNC-Präzisionsteile aus Georgsmarienhütte</p>
+          <h1 id="hero-title" class="hero-title words">
+            <span class="line"><span class="w"><span class="d1">Wir</span></span> <span class="w"><span class="d2">drehen.</span></span></span>
+            <span class="line"><span class="w"><span class="d3">Wir</span></span> <span class="w"><span class="d4">fräsen.</span></span></span>
+            <span class="line"><span class="w"><span class="d5">Sie</span></span> <span class="w"><span class="d6">bekommen</span></span></span>
+            <span class="line"><span class="w"><span class="d7 shine">Präzision.</span></span></span>
+          </h1>
+          <p class="lead">Präzisions- und Sonderteile nach Zeichnung – CNC-gedreht und CNC-gefräst, vom Prototyp bis zur Serie. Mit über 35&nbsp;Jahren Erfahrung in der Metallbearbeitung.</p>
           <div class="btn-row">
-            <a class="btn btn--silver" href="#schnellanfrage">Angebot anfordern</a>
+            <a class="btn btn--accent" href="#schnellanfrage">Angebot anfordern<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             <a class="btn btn--light" href="leistungen.html">Leistungen ansehen</a>
           </div>
           <ul class="hero-trust">
             <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Fertigung nach Zeichnung</li>
             <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Einzelteil bis Serie</li>
-            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Standort Georgsmarienhütte</li>
+            <li><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Made in Germany</li>
           </ul>
         </div>
-        <div class="hero-visual">
-          <img class="hero-img" src="assets/img/teile-uebersicht.webp" srcset="assets/img/teile-uebersicht-sm.webp 700w, assets/img/teile-uebersicht.webp 1400w" sizes="(min-width: 960px) 560px, 100vw" width="1400" height="878" alt="3D-Ansicht typischer Präzisionsteile: Flansch, gefrästes Aluminiumgehäuse, gedrehte Edelstahlwelle, Messingadapter und Bundbuchse" fetchpriority="high" decoding="async">
-          <div class="hero-chip hero-chip--a" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.5 20.2 7.2v9.6L12 21.5l-8.2-4.7V7.2z"/><circle cx="12" cy="12" r="3.6"/></svg><span><strong>Stahl · Edelstahl · Alu · Messing</strong>und technische Kunststoffe</span></div>
-          <div class="hero-chip hero-chip--b" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="9" r="6"/><path d="M8.5 13.8 7 22l5-2.6 5 2.6-1.5-8.2"/><path d="m9.6 9 1.6 1.6 3.2-3.2"/></svg><span><strong>Made in Germany</strong>gefertigt in Georgsmarienhütte</span></div>
+        <div class="viewer" data-viewer>
+          <div class="viewer-stage">
+            <img class="viewer-fallback" src="assets/img/teile-uebersicht.webp" srcset="assets/img/teile-uebersicht-sm.webp 700w, assets/img/teile-uebersicht.webp 1400w" sizes="(min-width: 960px) 560px, 100vw" width="1400" height="878" alt="3D-Ansicht typischer Präzisionsteile: Flansch, gefrästes Aluminiumgehäuse, gedrehte Edelstahlwelle, Messingadapter und Bundbuchse" fetchpriority="high" decoding="async">
+            <canvas class="viewer-canvas" data-sparks aria-hidden="true"></canvas>
+          </div>
+          <div class="viewer-ui">
+            <div class="viewer-tabs" role="group" aria-label="Bauteil in 3D ansehen">
+              <button class="viewer-tab" type="button" data-part="shaft" data-title="Welle" data-desc="Edelstahl · CNC-gedreht" aria-pressed="true">Welle</button>
+              <button class="viewer-tab" type="button" data-part="flange" data-title="Flansch" data-desc="Stahl · gedreht und gebohrt" aria-pressed="false">Flansch</button>
+              <button class="viewer-tab" type="button" data-part="housing" data-title="Gehäuse" data-desc="Aluminium · CNC-gefräst" aria-pressed="false">Gehäuse</button>
+              <button class="viewer-tab" type="button" data-part="adapter" data-title="Adapter" data-desc="Messing · gedreht und gefräst" aria-pressed="false">Adapter</button>
+            </div>
+            <p class="viewer-info" data-viewer-info aria-live="polite"><strong>Welle</strong><span>Edelstahl · CNC-gedreht</span></p>
+            <p class="viewer-hint"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg>Ziehen zum Drehen · Antippen für Schwung</p>
+          </div>
         </div>
       </div>
     </section>
@@ -109,7 +127,7 @@
     <section class="facts" aria-label="AY-Tech in Zahlen">
       <div class="container">
         <ul class="facts-list">
-          <li><span class="fact-value">35+</span><span class="fact-label">Jahre Erfahrung in der Metall- und Präzisionsteilebranche</span></li>
+          <li><span class="fact-value" data-count="35" data-suffix="+">35+</span><span class="fact-label">Jahre Erfahrung in der Metall- und Präzisionsteilebranche</span></li>
           <li><span class="fact-value">ab 1 Stück</span><span class="fact-label">vom Prototyp über Kleinserien bis zur Serie</span></li>
           <li><span class="fact-value">2 Verfahren</span><span class="fact-label">CNC-Drehen und CNC-Fräsen aus einer Hand</span></li>
           <li><span class="fact-value">1 Partner</span><span class="fact-label">fester Ansprechpartner – von der Anfrage bis zur Lieferung</span></li>
@@ -117,11 +135,15 @@
       </div>
     </section>
 
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track"><span class="marquee-item">CNC-Drehen</span><span class="marquee-dot"></span><span class="marquee-item">CNC-Fräsen</span><span class="marquee-dot"></span><span class="marquee-item">Prototypen</span><span class="marquee-dot"></span><span class="marquee-item">Kleinserien</span><span class="marquee-dot"></span><span class="marquee-item">Serienfertigung</span><span class="marquee-dot"></span><span class="marquee-item">Edelstahl</span><span class="marquee-dot"></span><span class="marquee-item">Aluminium</span><span class="marquee-dot"></span><span class="marquee-item">Messing</span><span class="marquee-dot"></span><span class="marquee-item">Sonderteile</span><span class="marquee-dot"></span><span class="marquee-item">Made in Germany</span><span class="marquee-dot"></span><span class="marquee-item">CNC-Drehen</span><span class="marquee-dot"></span><span class="marquee-item">CNC-Fräsen</span><span class="marquee-dot"></span><span class="marquee-item">Prototypen</span><span class="marquee-dot"></span><span class="marquee-item">Kleinserien</span><span class="marquee-dot"></span><span class="marquee-item">Serienfertigung</span><span class="marquee-dot"></span><span class="marquee-item">Edelstahl</span><span class="marquee-dot"></span><span class="marquee-item">Aluminium</span><span class="marquee-dot"></span><span class="marquee-item">Messing</span><span class="marquee-dot"></span><span class="marquee-item">Sonderteile</span><span class="marquee-dot"></span><span class="marquee-item">Made in Germany</span><span class="marquee-dot"></span></div>
+    </div>
+
     <section class="section" aria-labelledby="intro-title">
       <div class="container split">
         <div>
           <p class="eyebrow">Über AY-Tech</p>
-          <h2 id="intro-title">Ihr Partner für anspruchsvolle Dreh- und Frästeile</h2>
+          <h2 id="intro-title">Ihr Partner für <span class="hl">anspruchsvolle</span> Dreh- und Frästeile</h2>
           <p>Hinter AY-Tech steht Geschäftsführer Yüksel Açil – mit mehr als 35&nbsp;Jahren Erfahrung in der Metall- und Präzisionsteilebranche. Dieses Wissen fließt in jedes Bauteil ein: von der Prüfung Ihrer Zeichnung über die Wahl der passenden Fertigungsstrategie bis zur maßgenauen Endkontrolle.</p>
           <p>Wir verstehen uns als verlängerte Werkbank unserer Kunden: flexibel, termintreu und mit kurzen Wegen. Bei uns sprechen Sie mit Menschen, die Ihr Bauteil technisch verstehen.</p>
           <ul class="checklist">
@@ -141,7 +163,7 @@
                alt="Fertigungshalle der AY-Tech Präzisionsteile GmbH mit CNC-Dreh- und Fräsmaschinen">
           -->
           <div class="media">
-            <figure class="shot shot--4x3">
+            <figure data-tilt class="shot shot--4x3">
             <img src="assets/img/welle-buchse.webp" srcset="assets/img/welle-buchse-sm.webp 600w, assets/img/welle-buchse.webp 1057w" sizes="(min-width: 960px) 560px, 100vw" width="1057" height="860" alt="3D-Ansicht einer gedrehten Edelstahlwelle mit Gewinde und Passfeder sowie einer Bundbuchse aus Messing" loading="lazy" decoding="async">
             <figcaption class="shot-caption"><span class="shot-label">3D-Ansicht</span>Edelstahlwelle mit Gewinde und Passfeder, Bundbuchse aus Messing</figcaption>
           </figure>
@@ -155,11 +177,11 @@
       <div class="container">
         <div class="section-head">
           <p class="eyebrow">Leistungen</p>
-          <h2 id="services-title">Was wir für Sie fertigen</h2>
+          <h2 id="services-title">Was wir für Sie <span class="hl">fertigen</span></h2>
           <p class="lead">Zwei Kernverfahren, ein Anspruch: maßhaltige Bauteile in der Qualität, die Ihre Anwendung verlangt.</p>
         </div>
         <div class="grid grid--3">
-          <article class="card card--media">
+          <article data-tilt class="card card--media">
             <div class="card-media"><img src="assets/img/welle.webp" srcset="assets/img/welle-sm.webp 600w, assets/img/welle.webp 1194w" sizes="(min-width: 960px) 380px, (min-width: 640px) 50vw, 100vw" width="1194" height="672" alt="3D-Ansicht einer gedrehten Welle" loading="lazy" decoding="async"></div>
             <div class="card-body">
             <div class="icon-box"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2 10.5h5v-2h7V7h5v10h-5v-1.5H7v-2H2z"/><path d="M14 7v10M7 8.5v7" opacity=".55"/><path d="M8 4.2c2.6-1.3 5.4-1.3 8 0"/><path d="m14.8 2.6 1.4 1.7-2 .8"/></svg></div>
@@ -168,7 +190,7 @@
             <a class="link-arrow" href="leistungen.html#cnc-drehen">Mehr zum CNC-Drehen<span class="visually-hidden"> – Leistungen</span></a>
           </div>
           </article>
-          <article class="card card--media">
+          <article data-tilt class="card card--media">
             <div class="card-media"><img src="assets/img/gehaeuse.webp" srcset="assets/img/gehaeuse-sm.webp 600w, assets/img/gehaeuse.webp 916w" sizes="(min-width: 960px) 380px, (min-width: 640px) 50vw, 100vw" width="916" height="785" alt="3D-Ansicht eines gefrästen Aluminiumgehäuses" loading="lazy" decoding="async"></div>
             <div class="card-body">
             <div class="icon-box"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 2h6v4H9z"/><path d="M10 6h4v7l-2 2-2-2z"/><path d="m10 8.5 4 1.6M10 11l4 1.6"/><path d="M3 17h18v4H3z"/><path d="M8 17v1.5h8V17"/></svg></div>
@@ -177,7 +199,7 @@
             <a class="link-arrow" href="leistungen.html#cnc-fraesen">Mehr zum CNC-Fräsen<span class="visually-hidden"> – Leistungen</span></a>
           </div>
           </article>
-          <article class="card card--media">
+          <article data-tilt class="card card--media">
             <div class="card-media"><img src="assets/img/adapter.webp" srcset="assets/img/adapter-sm.webp 600w, assets/img/adapter.webp 957w" sizes="(min-width: 960px) 380px, (min-width: 640px) 50vw, 100vw" width="957" height="972" alt="3D-Ansicht von Anschlussadaptern aus Messing und Edelstahl" loading="lazy" decoding="async"></div>
             <div class="card-body">
             <div class="icon-box"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.5 20.2 7.2v9.6L12 21.5l-8.2-4.7V7.2z"/><circle cx="12" cy="12" r="3.6"/></svg></div>
@@ -194,30 +216,30 @@
       <div class="container">
         <div class="section-head">
           <p class="eyebrow">Ihre Vorteile</p>
-          <h2 id="benefits-title">Warum Kunden auf AY-Tech setzen</h2>
+          <h2 id="benefits-title">Warum Kunden auf AY-Tech <span class="hl">setzen</span></h2>
         </div>
         <ul class="features">
-          <li class="feature">
+          <li class="feature" data-spot>
             <span class="icon-wrap"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="9" r="6"/><path d="M8.5 13.8 7 22l5-2.6 5 2.6-1.5-8.2"/><path d="m9.6 9 1.6 1.6 3.2-3.2"/></svg></span>
             <div><h3>Erfahrung, die zählt</h3><p>Über 35&nbsp;Jahre Branchenkenntnis der Geschäftsführung – für fertigungsgerechte Lösungen und belastbare Aussagen.</p></div>
           </li>
-          <li class="feature">
+          <li class="feature" data-spot>
             <span class="icon-wrap"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v4M12 18.5v4M1.5 12h4M18.5 12h4"/></svg></span>
             <div><h3>Präzision bis ins Detail</h3><p>Enge Toleranzen und saubere Oberflächen sind für uns Standard – nicht die Ausnahme.</p></div>
           </li>
-          <li class="feature">
+          <li class="feature" data-spot>
             <span class="icon-wrap"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 3 9 4.5-9 4.5-9-4.5z"/><path d="m3 12 9 4.5 9-4.5"/><path d="m3 16.5 9 4.5 9-4.5"/></svg></span>
             <div><h3>Flexibel in der Losgröße</h3><p>Vom Einzelteil über den Prototyp bis zur Serie – jeweils wirtschaftlich gefertigt.</p></div>
           </li>
-          <li class="feature">
+          <li class="feature" data-spot>
             <span class="icon-wrap"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span>
             <div><h3>Verlässliche Termine</h3><p>Realistische Liefertermine, die wir einhalten – und offene Kommunikation, falls sich etwas ändert.</p></div>
           </li>
-          <li class="feature">
+          <li class="feature" data-spot>
             <span class="icon-wrap"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="4"/><path d="M4 21c.8-4 4-6 8-6s7.2 2 8 6"/></svg></span>
             <div><h3>Kurze Wege</h3><p>Ein fester Ansprechpartner und schnelle Entscheidungen – ohne Umwege über Callcenter oder Hierarchien.</p></div>
           </li>
-          <li class="feature">
+          <li class="feature" data-spot>
             <span class="icon-wrap"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.5 4.5 5.5v6c0 4.8 3.2 8.5 7.5 10 4.3-1.5 7.5-5.2 7.5-10v-6z"/><path d="m8.8 12 2.2 2.2 4.4-4.4"/></svg></span>
             <div><h3>Geprüfte Qualität</h3><p>Maßprüfung vor Auslieferung – auf Wunsch mit Messprotokoll zu Ihren Bauteilen.</p></div>
           </li>
@@ -229,7 +251,7 @@
       <div class="container">
         <div class="section-head">
           <p class="eyebrow">Ablauf</p>
-          <h2 id="process-title">In vier Schritten zu Ihrem Bauteil</h2>
+          <h2 id="process-title">In vier Schritten zu Ihrem <span class="hl">Bauteil</span></h2>
         </div>
         <ol class="steps steps--4">
           <li class="step"><h3>Anfrage</h3><p>Sie senden uns Zeichnung oder 3D-Modell mit Werkstoff, Stückzahl und Wunschtermin.</p></li>
@@ -244,7 +266,7 @@
       <div class="container">
         <div class="section-head">
           <p class="eyebrow">Branchen</p>
-          <h2 id="industries-title">Für wen wir fertigen</h2>
+          <h2 id="industries-title">Für wen wir <span class="hl">fertigen</span></h2>
           <p class="lead">Unsere Bauteile kommen überall dort zum Einsatz, wo Maßhaltigkeit und Zuverlässigkeit zählen.</p>
         </div>
         <!-- Branchen bitte mit AY-Tech abstimmen -->
@@ -264,7 +286,7 @@
       <div class="container split split--top">
         <div>
           <p class="eyebrow">Häufige Fragen</p>
-          <h2 id="faq-title">Gut zu wissen</h2>
+          <h2 id="faq-title">Gut zu <span class="hl">wissen</span></h2>
           <p class="lead">Antworten auf typische Fragen von Einkäufern und Konstrukteuren.</p>
           <p>Ihre Frage ist nicht dabei? Rufen Sie uns an unter <a href="tel:+495401000000"><span class="ph-text">+49&nbsp;5401&nbsp;000000</span></a> oder schreiben Sie uns.</p>
         </div>
@@ -305,7 +327,7 @@
       <div class="container quote-grid">
         <div>
           <p class="eyebrow">Schnellanfrage</p>
-          <h2 id="quote-title">Ihr Angebot – schnell und unverbindlich</h2>
+          <h2 id="quote-title">Ihr Angebot – <span class="hl">schnell</span> und unverbindlich</h2>
           <p class="lead">Beschreiben Sie kurz Ihr Bauteil. Wir prüfen die Machbarkeit und melden uns mit einem konkreten Angebot.</p>
           <ol class="quote-steps">
             <li><strong>Anfrage senden</strong>mit wenigen Angaben – dauert keine zwei Minuten</li>
@@ -396,7 +418,7 @@
               <input id="q-website" name="website" type="text" tabindex="-1" autocomplete="off">
             </div>
             <input type="hidden" name="dauer" value="">
-            <button class="btn btn--primary btn--block mt-md" type="submit">Angebot anfordern</button>
+            <button class="btn btn--accent btn--block mt-md" type="submit">Angebot anfordern<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
             <p class="form-note mt-sm">Mit <span class="req">*</span> gekennzeichnete Felder sind Pflichtfelder. Kostenlos und unverbindlich.</p>
           </form>
           <p class="quote-alt"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2"/></svg><span>Lieber persönlich? <a href="tel:+495401000000"><span class="ph-text">+49&nbsp;5401&nbsp;000000</span></a></span></p>
@@ -448,6 +470,7 @@
         <p class="footer-reg">Amtsgericht Osnabrück<br>HRB 219627</p>
       </div>
     </div>
+    <p class="footer-giant" aria-hidden="true">AY-TECH</p>
     <div class="container">
       <div class="footer-bottom">
         <p>© <span data-year>2026</span> AY-Tech Präzisionsteile GmbH</p>
@@ -458,7 +481,7 @@
 
   <div class="mobile-cta">
     <a class="btn btn--outline" href="tel:+495401000000"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2"/></svg>Anrufen</a>
-    <a class="btn btn--primary" href="kontakt.html#formular">Angebot anfordern</a>
+    <a class="btn btn--accent" href="kontakt.html#formular">Angebot anfordern</a>
   </div>
 </body>
 </html>

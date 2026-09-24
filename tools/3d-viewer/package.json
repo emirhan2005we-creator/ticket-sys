@@ -1,0 +1,12 @@
+{
+  "name": "ay-tech-3d-viewer",
+  "private": true,
+  "description": "Baut website/assets/js/hero3d.js (interaktiver 3D-Viewer der Startseite)",
+  "scripts": {
+    "build": "esbuild hero3d.src.js --bundle --format=esm --minify --target=es2020 --legal-comments=eof --outfile=../../website/assets/js/hero3d.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "three": "^0.186.1"
+  }
+}
